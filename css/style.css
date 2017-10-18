@@ -1,0 +1,37 @@
+body, html {
+	height: 100%;
+}
+
+.home {
+	background: url('../img/bg.jpeg') no-repeat bottom center scroll; 
+	width: 100%;
+	height: 100%;
+	background-size: 100% auto;
+	z-index: 1;
+}
+
+.home-jumbo {
+	z-index: 3;
+	background: linear-gradient(rgba(255,255,255, .5), rgba(255,255,255, .5));
+}
+
+.overlay {
+	position:absolute;
+	width:100%;
+	height:100%;
+	background:rgba(0,0,0,0.2);
+	z-index: 2;
+}
+
+.vertical-center {
+	display: flex;
+	align-items: center;
+}
+
+.dataTableFirst {
+	display: none;
+}
+
+.sidebar, .graph {
+	display: none;
+}
