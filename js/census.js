@@ -6,9 +6,27 @@
 // }
 
 
+// look for duplicates within the data and remove them
+// tell the user that the duplicate data has been removed
+// ask if the user wants to include the duplicate data in the table
+
+// FEATURE - SEARCH
+// SIdebar implementation
+// Add a search bar that searches for any records in all columns
+
 // need to edit the data before spiting it out to the user
+
+
+
+//FEATURE - REMOVE DUPLICATES
+// Use the array filter function
+
+
+// FEATURE - Hiding columns based on viewport
+
+
 function processCensusDataTypes(data) {
-	
+	// TODO data[row][0] Only target the columns that need editing
 	for (let row = 0; row < data.length; row++) {
 		for (let column = 0; column < data[row].length; column++) {
 			if (column == 0 || column == 1 || column == 5 || column == 7 || column == 9) {
@@ -32,9 +50,6 @@ function renderDataTableTwoHeader(data) {
 	let value;
 	console.log(data);
 	data[0].forEach((item, index) => {
-		console.log('running');
-		console.log(item);
-		console.log(index);
 		value = returnObjectValueByKey(HEADER, item);
 		console.log(value);
 		if (value !== false) {
@@ -49,10 +64,8 @@ function renderDataTableTwoHeader(data) {
 function renderDataTableTwo() {
 	console.log('renderDataTableTwo running');
 	let data = CENSUS_DATA['queryData'];
-	
 	let columns = renderDataTableTwoHeader(data.splice(0, 1));
 	data = processCensusDataTypes(data);
-	console.log(data);
 	$('#dataTableTwo').DataTable({
 		data: data,
 		columns: columns,
@@ -64,23 +77,6 @@ function renderDataTableTwo() {
 	});
 }
 
-
-
-
-
-
-
-
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-
 function getReportParameters(reportIndex) {
 	// const variableEndpoint = CENSUS_DATA[reportIndex].api[0].variable_endpoint;
 	// getCensusData(variableEndpoint, query, reportIndex, processVariableData);
@@ -91,8 +87,6 @@ function getReportParameters(reportIndex) {
 		query: query
 	};
 }
-
-
 
 function getCensusData(endpoint, query, reportIndex, callback) {
 	$.getJSON(endpoint, query, function(data) {
