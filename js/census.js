@@ -14,7 +14,17 @@
 // SIdebar implementation
 // Add a search bar that searches for any records in all columns
 
-// need to edit the data before spiting it out to the user
+
+function listenToSidebarSearch() {
+	$('#sidebarSearch').on('keyup', event => {
+		$('#dataTableTwo').DataTable().search($(event.currentTarget).val()).draw();
+	});
+}
+
+
+
+
+
 
 
 
@@ -23,6 +33,12 @@
 
 
 // FEATURE - Hiding columns based on viewport
+
+
+
+
+
+
 
 
 function processCensusDataTypes(data) {
@@ -69,6 +85,9 @@ function renderDataTableTwo() {
 	$('#dataTableTwo').DataTable({
 		data: data,
 		columns: columns,
+		retrieve: true,
+		searching: true,
+		"sDom": 'ltipr',
 		"order": [[0, "desc"]],
 		"language": {
 			"decimal": ".",
@@ -344,6 +363,7 @@ function handleCensus() {
 	$(listenToSideBarClick);
 	$(listenToFilterSubmit);
 	$(listenToPaginationClick);
+	$(listenToSidebarSearch);
 }
 
 $(handleCensus);
