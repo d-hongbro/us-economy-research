@@ -35,3 +35,28 @@ body, html {
 .graph {
 	display: none;
 }
+
+#dataTableTwo_info {
+	float: left;
+	padding-left: 1em;
+}
+
+#dataTableTwo_paginate {
+	float: right;
+	padding-right: 1em;
+}
+
+.card-footer {
+	text-align: center;
+	float: none;
+	clear: both;
+}
+
+.dataTables_wrapper .dataTables_paginate {
+	float: none;
+	text-align: center;
+}
+
+.hidden {
+	display: none;
+}

@@ -38,7 +38,7 @@
 											
 							</select>
 							<span class="input-group-btn">
-								<button type="submit" class="btn btn-default" aria-label="Search Button">
+								<button id="reportSubmitButton" type="submit" class="btn btn-default" href="#resultsPage" aria-label="Search Button">
 									<i class="fa fa-search"></i>
 								</button>
 							</span>
@@ -48,7 +48,7 @@
 			</div>
 		</div>
 	</section>
-	<div class="container-fluid">
+	<div id="resultsPage" class="container-fluid hidden">
 	<div class="row">
 		<div class="sidebar col-md-2">
 			<header>
@@ -60,6 +60,16 @@
 					<input id="sidebarSearch" type="text" class="form-control" placeholder='"Health Care" or Health Care' aria-describedby="sizing-addon1">
 				</div>
 			</div>
+
+			<div id="sidebarLength" class="js-sidebar-length">
+				<div class="list-inline btn-group">
+					<button type="button" class="btn btn-secondary list-inline-item active">50</button>
+					<button type="button" class="btn btn-secondary list-inline-item">100</button>
+					<button type="button" class="btn btn-secondary list-inline-item">200</button>
+					<button type="button" class="btn btn-secondary list-inline-item">500</button>
+				</div>
+			</div>
+
 			<form>
 			  <fieldset class="form-group">
 			    <legend>Table: Results Per Page</legend>
@@ -126,13 +136,16 @@
 
 			<div class="card">
 				<h3 class="card-header">Data</h3>
-				<div class="card-block" data-current-page="">
-					<table id="dataTableTwo"></table>
-				</div>
+				<table id="dataTableTwo"></table>
+			</div>
+<!-- 				<h3 class="card-header">Data</h3>
+				<div class="card-block" data-current-page=""> -->
+					
+<!-- 				</div>
 				<div id="tablePaginationTwo" class="card-footer">
 					
-				</div>
-			</div>
+				</div> -->
+
 
 
 		</div>
