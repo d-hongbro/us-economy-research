@@ -21,7 +21,13 @@ function listenToSidebarSearch() {
 	});
 }
 
-
+function listenToSidebarTableLength() {
+	$('#sidebarLength').on('click', 'button', event => {
+		$('#dataTableTwo').DataTable().page.len($(event.currentTarget).text()).draw();
+		$('#sidebarLength').find('button.active').removeClass('active');
+		$(event.currentTarget).toggleClass('active');
+	});
+}
 
 
 
@@ -33,9 +39,6 @@ function listenToSidebarSearch() {
 
 
 // FEATURE - Hiding columns based on viewport
-
-
-
 
 
 
@@ -64,16 +67,12 @@ function renderDataTableTwoHeader(data) {
 	console.log('renderDataTableTwoHeader running');
 	let columns = [];
 	let value;
-	console.log(data);
 	data[0].forEach((item, index) => {
 		value = returnObjectValueByKey(HEADER, item);
-		console.log(value);
 		if (value !== false) {
 			columns.push({title: value});
 		}
-		console.log(value);
 	});
-	console.log(columns);
 	return columns;
 }
 
@@ -87,7 +86,7 @@ function renderDataTableTwo() {
 		columns: columns,
 		retrieve: true,
 		searching: true,
-		"sDom": 'ltipr',
+		"sDom": '<"top"ip><"card-block"tr><"card-footer"p>',
 		"order": [[0, "desc"]],
 		"language": {
 			"decimal": ".",
@@ -320,9 +319,15 @@ function listenToMainReportSubmit() {
 		event.preventDefault();
 		// Might be implemented in the future for more reports
 		const reportIndex = $('#reportSelect').find(":selected").val();
-
+		const target = $('#reportSubmitButton').attr('href');
 		const parameters = getReportParameters(reportIndex);
 		getCensusData(parameters.endpoint, parameters.query, reportIndex, processCensusData);
+		$('#resultsPage').toggleClass('hidden');
+	    $('html, body').stop().animate({
+		    scrollTop: $(target).offset().top
+	    }, 1500);
+
+		
 	});
 }
 
@@ -364,6 +369,7 @@ function handleCensus() {
 	$(listenToFilterSubmit);
 	$(listenToPaginationClick);
 	$(listenToSidebarSearch);
+	$(listenToSidebarTableLength);
 }
 
 $(handleCensus);
