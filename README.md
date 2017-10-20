@@ -3,7 +3,16 @@ https://d-hongbro.github.io/us-economy-research/
 
 # Us Economy Census Data Research
 
-One Paragraph of project description goes here
+Allows the user to search the Economy Census Data by state
+
+## Features Coming
+
+1. CSS - Make it look better
+2. Deploy graph for the data
+3. Download as an excel file
+4. Mulitple tables per state
+5. Data comparison tables
+6. Data comparison graphs
 
 ## Getting Started
 
