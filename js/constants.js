@@ -9,7 +9,8 @@ let CENSUS_DATA = {
 			NAICS2012: '',
 			key: CENSUS_KEY
 			},
-	queryData: []
+	queryData: [],
+	callsDone: 0,
 }
 
 let OPTAX = {

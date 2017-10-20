@@ -1,11 +1,3 @@
-// function processVariableData(data) {
-// 	console.log(data);
-// 	data.sort();
-// 	CENSUS_DATA[0].api[0].variable_data = data;
-// 	console.log(CENSUS_DATA[0].api[0].variable_data);
-// }
-
-
 // look for duplicates within the data and remove them
 // tell the user that the duplicate data has been removed
 // ask if the user wants to include the duplicate data in the table
@@ -29,9 +21,14 @@ function listenToSidebarTableLength() {
 	});
 }
 
-
-
-
+function listenToAjaxStop() {
+	$(document).ajaxStop(function () {
+		$('#reportSelect').toggleClass('disabled');
+		$('#reportSubmitButton').toggleClass('disabled');
+		console.log('report rdy');
+		console.log(CENSUS_DATA);
+	});
+}
 
 
 //FEATURE - REMOVE DUPLICATES
@@ -40,25 +37,78 @@ function listenToSidebarTableLength() {
 
 // FEATURE - Hiding columns based on viewport
 
+function processCensusDataLoop(data, callNumber) {
+	// Chunked Data for efficiency
+	let currentData = data;
+	CENSUS_DATA[callNumber] = currentData;
 
+	// if (CENSUS_DATA.queryData[0] == null) {
+	// 	CENSUS_DATA.queryData = currentData;
+	// } else {
+	// 	currentData.splice(0, 1);
+	// 	CENSUS_DATA.queryData = CENSUS_DATA.queryData.concat(currentData);
+	// }
+	CENSUS_DATA.callsDone++;
+	if (CENSUS_DATA.submitClicked) {
+		$('#dataTableTwo').DataTable().rows.add(currentData).draw(false);
+	}
+	console.log(`CAll ${callNumber} done. Percent done: ${(CENSUS_DATA.callsDone/51) *100}%`);
+}
 
+function runProcessesOnLoad() {
+	// How to do interval getJson
+	const endpoint = CENSUS_DATA.endpoint;
+	let timeOut = 1000;
+	let query = CENSUS_DATA.defaultQuery;
+	let stateCode;
+	let callNumber = 1;
+	for (let key in STATE_CODE) {
+		(function(key, query, stateCode, timeOut, endpoint) {
+			if (STATE_CODE[key] < 10) {
+				stateCode = '0' + STATE_CODE[key];
+			} else {
+				stateCode = STATE_CODE[key];
+			}
+			query.for = `state:${stateCode}`;
+			getCensusDataCall(endpoint, query, timeOut, callNumber, processCensusDataLoop)
+			callNumber++;
+		})(key, query, stateCode, timeOut, endpoint);
+	};
+}
 
+// FEATURE - AJAX ON LOAD
+
+function getCensusDataCall(endpoint, query, timeOut, callNumber, callback) {
+	console.log(query);
+		$.getJSON(endpoint, query, function(data) {
+				callback(data, callNumber);
+		})
+			.done(function(data, textStatus, jqXHR) {
+		 		// processCensusData(data);
+		 	})
+		 	.fail(function( jqXHR, textStatus, errorThrown) {
+		 		console.log('failed AJAX');
+		 		console.log(errorThrown);
+		 	})
+		 	.always(function( data, textStatus, jqXHR ) { 
+		 		console.log('running AJAX'); 
+		});
+}
 
 function processCensusDataTypes(data) {
 	// TODO data[row][0] Only target the columns that need editing
 	for (let row = 0; row < data.length; row++) {
-		for (let column = 0; column < data[row].length; column++) {
-			if (column == 0 || column == 1 || column == 5 || column == 7 || column == 9) {
-				data[row][column] = parseInt(data[row][column]).toLocaleString();
-			} else if (column == 6 ||  column == 8 || column == 10) {
-				data[row][column] = data[row][column] + '%';
-			} else if (column == 4) {
-				data[row][column] = OPTAX[data[row][column]];
-			}
-			if (column == 5 || column == 7 || column == 9) {
-				data[row][column] = "$" + data[row][column];
-			}
-		}
+		data[row][0] = parseInt(data[row][0]).toLocaleString();
+		data[row][1] = parseInt(data[row][1]).toLocaleString();
+		data[row][5] = "$" + parseInt(data[row][5]).toLocaleString();
+		data[row][7] = "$" + parseInt(data[row][7]).toLocaleString();
+		data[row][9] = "$" + parseInt(data[row][9]).toLocaleString();
+
+		data[row][6] = data[row][6] + '%';
+		data[row][8] = data[row][8] + '%';
+		data[row][10] = data[row][10] + '%';
+
+		data[row][4] = OPTAX[data[row][4]];
 	}
 	return data;
 }
@@ -78,13 +128,14 @@ function renderDataTableTwoHeader(data) {
 
 function renderDataTableTwo() {
 	console.log('renderDataTableTwo running');
-	let data = CENSUS_DATA['queryData'];
+	// let data = CENSUS_DATA['queryData'];
+	let data = CENSUS_DATA[1];
 	let columns = renderDataTableTwoHeader(data.splice(0, 1));
 	data = processCensusDataTypes(data);
 	$('#dataTableTwo').DataTable({
 		data: data,
 		columns: columns,
-		retrieve: true,
+		retrieve: true,	
 		searching: true,
 		"sDom": '<"top"ip><"card-block"tr><"card-footer"p>',
 		"order": [[0, "desc"]],
@@ -95,16 +146,61 @@ function renderDataTableTwo() {
 	});
 }
 
-function getReportParameters(reportIndex) {
-	// const variableEndpoint = CENSUS_DATA[reportIndex].api[0].variable_endpoint;
-	// getCensusData(variableEndpoint, query, reportIndex, processVariableData);
-	const query = CENSUS_DATA['defaultQuery'];
-	const endpoint = CENSUS_DATA['endpoint'];
-	return {
-		endpoint: endpoint, 
-		query: query
-	};
+function listenToMainReportSubmit() {
+	$('.home-search-form').submit(event => {
+		console.log('main form submitted');
+		event.preventDefault();
+		// Might be implemented in the future for more reports
+		const reportIndex = $('#reportSelect').find(":selected").val();
+		const target = $('#reportSubmitButton').attr('href');
+		$('#resultsPage').toggleClass('hidden');
+		renderDataTableTwo();
+	    $('html, body').stop().animate({
+		    scrollTop: $(target).offset().top
+	    }, 1500);
+	    CENSUS_DATA.submitClicked = true;
+		
+	});
 }
+
+function listenToPaginationClick() {
+	$('#tablePagination').on('click', '.js-pagination-link', function(event) {
+		event.preventDefault();
+		let elementClicked = checkPageNumber($(event.currentTarget).find('a').text());
+		generateTable(0, elementClicked);
+		renderTablePagination(CENSUS_DATA['queryData'], elementClicked);
+	})
+}
+
+function updateMainDropDown() {
+	// const html = getAllReports();
+	const html = `<option value="0">${CENSUS_DATA['title']}</option>`;
+	$('#reportSelect').append(html);
+}
+
+function handleCensus() {
+	console.log('handleCensus running');
+	// user report click listener
+	// user report filter listener
+	// user sidebar click listener
+	// get current available reports in a drop down menu on home page+
+	// load the variables I will be using for the calls
+	$(updateMainDropDown);
+	$(listenToMainReportSubmit);
+	$(listenToSidebarSearch);
+	$(listenToSidebarTableLength);
+	$(runProcessesOnLoad);
+	$(listenToAjaxStop);
+}
+
+$(handleCensus);
+
+
+
+
+
+
+
 
 function getCensusData(endpoint, query, reportIndex, callback) {
 	$.getJSON(endpoint, query, function(data) {
@@ -119,6 +215,7 @@ function getCensusData(endpoint, query, reportIndex, callback) {
 	 	})
 	 	.always(function( data, textStatus, jqXHR ) { console.log('running AJAX'); });
 }
+
 
 function generateChart(reportIndex) {
 
@@ -146,7 +243,6 @@ function generateTableHeader(data) {
 	});
 	return html;
 }
-
 
 function setPageNumber(pageNumber) {
 	$('#dataTable').attr('data-current-page', pageNumber);
@@ -202,6 +298,7 @@ function getPageStartEnd(resultsPerPage, pageNumber, dataLength) {
 
 	return [resultsPerPage, pageNumber, resultStart, resultEnd, totalPage];
 }
+
 
 function generateTablePaginationHTML(resultsArray) {
 	// Switch this to a destructive statement
@@ -272,104 +369,3 @@ function processCensusData(data, reportIndex) {
 	renderTablePagination(data);
 	renderDataTableTwo();
 }
-
-function renderFilterBar(data) {
-	// Render Filter Bar at the top
-	// This is the callback function called within renderResultsPage()
-}
-
-function renderSidebar() {
-	// Render sidebar Menu
-}
-
-function renderResultsPage(report) {
-	// Render sidebar menu
-	renderSidebar();
-	// Render top Filter bar (report)
-	// getCensusData(report, renderFilterBar);
-	// Render Graph box even if no data
-	// Render Table Box even if no data
-}
-
-function listenToFilterSubmit() {
-	// Listens to Report filter submit
-	// Call AJAX with report and callback function
-	// re-render results page
-	// getCensusData(report, processCensusData);
-	// renderResultsPage(report);
-}
-
-function listenToSideBarClick() {
-	// Listens to sidebar click
-	// Call AJAX with report and callback function
-	// re-render results page
-	// getCensusData(report, processCensusData);
-	// renderResultsPage(report);
-
-}
-
-function listenToMainReportSubmit() {
-	// Listen to main page report lick
-	// If clicked, get report value and pass to AJAX census call
-	// Pass in callback function for data
-	// Render Result page(Report)
-
-	$('.home-search-form').submit(event => {
-		console.log('main form submitted');
-		event.preventDefault();
-		// Might be implemented in the future for more reports
-		const reportIndex = $('#reportSelect').find(":selected").val();
-		const target = $('#reportSubmitButton').attr('href');
-		const parameters = getReportParameters(reportIndex);
-		getCensusData(parameters.endpoint, parameters.query, reportIndex, processCensusData);
-		$('#resultsPage').toggleClass('hidden');
-	    $('html, body').stop().animate({
-		    scrollTop: $(target).offset().top
-	    }, 1500);
-
-		
-	});
-}
-
-function listenToPaginationClick() {
-	$('#tablePagination').on('click', '.js-pagination-link', function(event) {
-		event.preventDefault();
-		let elementClicked = checkPageNumber($(event.currentTarget).find('a').text());
-		generateTable(0, elementClicked);
-		renderTablePagination(CENSUS_DATA['queryData'], elementClicked);
-	})
-}
-
-// function getAllReports() {
-// 	// returns object of all reports available
-// 	let string = '';
-// 	$.each(CENSUS_DATA, (i, report) => {
-// 		string += `<option value="${i}">${report.name}</option>`;
-// 	});
-// 	return string;
-// }
-
-function updateMainDropDown() {
-	// const html = getAllReports();
-	const html = `<option value="0">${CENSUS_DATA['title']}</option>`;
-	$('#reportSelect').append(html);
-}
-
-function handleCensus() {
-	console.log('handleCensus running');
-	// user report click listener
-	// user report filter listener
-	// user sidebar click listener
-	// get current available reports in a drop down menu on home page+
-	// load the variables I will be using for the calls
-
-	$(updateMainDropDown);
-	$(listenToMainReportSubmit);
-	$(listenToSideBarClick);
-	$(listenToFilterSubmit);
-	$(listenToPaginationClick);
-	$(listenToSidebarSearch);
-	$(listenToSidebarTableLength);
-}
-
-$(handleCensus);
