@@ -60,3 +60,21 @@ body, html {
 .hidden {
 	display: none;
 }
+
+#sidebarLength .list-inline {
+	width: 100%;
+	justify-content: space-between;
+}
+
+
+/* DROPDOWN BUTTON */
+
+#sidebarStates {
+	width: 100%;
+}
+
+.scrollable-menu {
+    height: auto;
+    max-height: 400px;
+    overflow-x: hidden;
+}
