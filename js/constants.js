@@ -11,6 +11,7 @@ let CENSUS_DATA = {
 			},
 	queryData: [],
 	callsDone: 0,
+	showing: 1
 }
 
 let OPTAX = {

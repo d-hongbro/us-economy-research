@@ -2,6 +2,66 @@
 // tell the user that the duplicate data has been removed
 // ask if the user wants to include the duplicate data in the table
 
+
+// FEATURE - sidebar filter by state
+// dropdown menu to choose state
+// dropdown menu is dynamically made
+// dropdown event will redraw the table according to what was chosen
+// How to grab current state thats populated
+
+function returnDropdownItem(item, disabled = false, link = '#', ) {
+	return `<a class="dropdown-item ${disabled ? 'disabled' : ''}" href="${link}">${item}</a>`;
+}
+
+function fillSidebarState(state, currentlyDisplayed = false) {
+	const dropdownItem = returnDropdownItem(state, currentlyDisplayed);
+	console.log(dropdownItem);
+	if (currentlyDisplayed) {
+		const divider = `<div class="dropdown-divider"></div>`;
+		$('#sidebarStates').find('.dropdown-menu').empty().append(dropdownItem);
+		$('#sidebarStates').find('.dropdown-menu').append(divider);
+		$('#sidebarStatesButton').text(state);
+	} else {
+		$('#sidebarStates').find('.dropdown-menu').append(dropdownItem);
+	}
+}
+
+function loadSidebarClickedTable(state) {
+	console.log('loadSidebarClickedTable running');
+	let data = CENSUS_DATA[state];
+	renderDataTableTwoHeader(data.splice(0, 1));
+	data = processCensusDataTypes(data);
+	$('#dataTableTwo').DataTable().clear().draw();
+	$('#dataTableTwo').DataTable().rows.add(data);
+	$('#dataTableTwo').DataTable().columns.adjust().draw()
+}
+
+function loadSidebarAfterClick(state) {
+	// FIrst erase the options
+	// load what was clicked at the top with divider
+	// then loop through the rest and add
+	fillSidebarState(state, true);
+	for (let key in STATE_CODE) {
+		if (key !== state) {
+			fillSidebarState(key);
+		}
+	}
+}
+
+function listenToSidebarState() {
+	$('#sidebarStates').on('click', '.dropdown-item', event => {
+		event.preventDefault();
+		// event.stopPropagation();
+		const stateClicked = $(event.currentTarget).text();
+		$('#sidebarStatesButton').text(stateClicked);
+		loadSidebarClickedTable(stateClicked);
+		loadSidebarAfterClick(stateClicked);
+		console.log(stateClicked);
+		console.log('state clicked');
+	});
+}
+
+
 // FEATURE - SEARCH
 // SIdebar implementation
 // Add a search bar that searches for any records in all columns
@@ -37,11 +97,10 @@ function listenToAjaxStop() {
 
 // FEATURE - Hiding columns based on viewport
 
-function processCensusDataLoop(data, callNumber) {
+function processCensusDataLoop(data, callNumber, state) {
 	// Chunked Data for efficiency
 	let currentData = data;
-	CENSUS_DATA[callNumber] = currentData;
-
+	CENSUS_DATA[state] = currentData;
 	// if (CENSUS_DATA.queryData[0] == null) {
 	// 	CENSUS_DATA.queryData = currentData;
 	// } else {
@@ -70,7 +129,10 @@ function runProcessesOnLoad() {
 				stateCode = STATE_CODE[key];
 			}
 			query.for = `state:${stateCode}`;
-			getCensusDataCall(endpoint, query, timeOut, callNumber, processCensusDataLoop)
+			getCensusDataCall(endpoint, query, timeOut, key, callNumber, processCensusDataLoop);
+			if (key !== 'Alabama') {
+				fillSidebarState(key);
+			}
 			callNumber++;
 		})(key, query, stateCode, timeOut, endpoint);
 	};
@@ -78,10 +140,10 @@ function runProcessesOnLoad() {
 
 // FEATURE - AJAX ON LOAD
 
-function getCensusDataCall(endpoint, query, timeOut, callNumber, callback) {
+function getCensusDataCall(endpoint, query, timeOut, state, callNumber, callback) {
 	console.log(query);
 		$.getJSON(endpoint, query, function(data) {
-				callback(data, callNumber);
+				callback(data, callNumber, state);
 		})
 			.done(function(data, textStatus, jqXHR) {
 		 		// processCensusData(data);
@@ -129,7 +191,8 @@ function renderDataTableTwoHeader(data) {
 function renderDataTableTwo() {
 	console.log('renderDataTableTwo running');
 	// let data = CENSUS_DATA['queryData'];
-	let data = CENSUS_DATA[1];
+	let data = CENSUS_DATA['Alabama'];
+	CENSUS_DATA['showing'] = 1;
 	let columns = renderDataTableTwoHeader(data.splice(0, 1));
 	data = processCensusDataTypes(data);
 	$('#dataTableTwo').DataTable({
@@ -137,6 +200,7 @@ function renderDataTableTwo() {
 		columns: columns,
 		retrieve: true,	
 		searching: true,
+		"iDisplayLength": 50,
 		"sDom": '<"top"ip><"card-block"tr><"card-footer"p>',
 		"order": [[0, "desc"]],
 		"language": {
@@ -176,6 +240,7 @@ function updateMainDropDown() {
 	// const html = getAllReports();
 	const html = `<option value="0">${CENSUS_DATA['title']}</option>`;
 	$('#reportSelect').append(html);
+	fillSidebarState('Alabama', true);
 }
 
 function handleCensus() {
@@ -191,6 +256,7 @@ function handleCensus() {
 	$(listenToSidebarTableLength);
 	$(runProcessesOnLoad);
 	$(listenToAjaxStop);
+	$(listenToSidebarState);
 }
 
 $(handleCensus);
