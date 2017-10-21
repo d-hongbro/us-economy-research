@@ -17,9 +17,9 @@ function fillSidebarState(state, currentlyDisplayed = false) {
 	const dropdownItem = returnDropdownItem(state, currentlyDisplayed);
 	console.log(dropdownItem);
 	if (currentlyDisplayed) {
-		const divider = `<div class="dropdown-divider"></div>`;
-		$('#sidebarStates').find('.dropdown-menu').empty().append(dropdownItem);
-		$('#sidebarStates').find('.dropdown-menu').append(divider);
+		// const divider = `<div class="dropdown-divider"></div>`;
+		// $('#sidebarStates').find('.dropdown-menu').empty().append(dropdownItem);
+		// $('#sidebarStates').find('.dropdown-menu').append(divider);
 		$('#sidebarStatesButton').text(state);
 	} else {
 		$('#sidebarStates').find('.dropdown-menu').append(dropdownItem);
@@ -53,11 +53,11 @@ function listenToSidebarState() {
 		event.preventDefault();
 		// event.stopPropagation();
 		const stateClicked = $(event.currentTarget).text();
+		console.log(stateClicked);
+		console.log('state clicked');
 		$('#sidebarStatesButton').text(stateClicked);
 		loadSidebarClickedTable(stateClicked);
 		loadSidebarAfterClick(stateClicked);
-		console.log(stateClicked);
-		console.log('state clicked');
 	});
 }
 
@@ -130,6 +130,7 @@ function runProcessesOnLoad() {
 			}
 			query.for = `state:${stateCode}`;
 			getCensusDataCall(endpoint, query, timeOut, key, callNumber, processCensusDataLoop);
+			
 			if (key !== 'Alabama') {
 				fillSidebarState(key);
 			}

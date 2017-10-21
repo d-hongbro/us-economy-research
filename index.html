@@ -52,6 +52,7 @@
 			<header>
 				<h2>Filter</h2>
 			</header>
+			<hr/>
 			<div class="js-sidebar-search">
 				<div class="input-group">
 					<span class="input-group-addon" id="sizing-addon1">Search</span>
@@ -60,22 +61,28 @@
 			</div>
 
 			<div id="sidebarLength" class="js-sidebar-length">
+				<h4>Show Items</h4>
+				<hr/>
 				<div class="list-inline btn-group">
-					<button type="button" class="btn btn-secondary list-inline-item active">50</button>
-					<button type="button" class="btn btn-secondary list-inline-item">100</button>
-					<button type="button" class="btn btn-secondary list-inline-item">200</button>
-					<button type="button" class="btn btn-secondary list-inline-item">500</button>
+					<button type="button" class="btn btn-outline-secondary list-inline-item active">50</button>
+					<button type="button" class="btn btn-outline-secondary list-inline-item">100</button>
+					<button type="button" class="btn btn-outline-secondary list-inline-item">200</button>
+					<button type="button" class="btn btn-outline-secondary list-inline-item">500</button>
+				</div>
+			</div>
+			<div id="sidebarStates">
+				<h4>Reports by States</h4>
+				<hr/>
+				<div class="btn-group dropdown">
+				  <button id="sidebarStatesButton" type="button" class="btn btn-outline-primary btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				    Choose by State
+				  </button>
+				  <div class="dropdown-menu scrollable-menu">
+
+				  </div>
 				</div>
 			</div>
 
-			<div id="sidebarStates" class="btn-group dropdown">
-			  <button id="sidebarStatesButton" type="button" class="btn btn-secondary btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			    Choose by State
-			  </button>
-			  <div class="dropdown-menu scrollable-menu">
-
-			  </div>
-			</div>
 		</div>
 		<div class="col-md-10">
 			<div class="graph card">
