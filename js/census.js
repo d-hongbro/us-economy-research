@@ -3,6 +3,40 @@
 // ask if the user wants to include the duplicate data in the table
 
 
+// UI UX TABLE RESPONSIVENESS
+
+function addStylingClasses() {
+	$('table').addClass('table-striped table-bordered table-sm');
+}
+
+function listenToViewportChange() {
+	let viewportWidth = $(window).width();
+	addResponsiveness(viewportWidth);
+	$(window).resize(event => {
+		viewportWidth = $(window).width();
+		addResponsiveness(viewportWidth);
+	});
+}
+
+function addResponsiveness(currentWidth) {
+	//listens to the viewport width
+	// then adds appropiate classes to the html elements
+	$('table').addClass('table table-responsive');
+	$('#dataTableTwo_paginate').addClass('col-lg-6');
+	$('#dataTableTwo_info').addClass('col-lg-6');
+
+	if (currentWidth >= 1200) {
+
+	} else if (currentWidth >= 992) {
+
+	} else if (currentWidth >= 768) {
+
+	} else if (currentWidth < 768) {
+
+	}
+}
+
+
 // FEATURE - sidebar filter by state
 // dropdown menu to choose state
 // dropdown menu is dynamically made
@@ -17,9 +51,9 @@ function fillSidebarState(state, currentlyDisplayed = false) {
 	const dropdownItem = returnDropdownItem(state, currentlyDisplayed);
 	console.log(dropdownItem);
 	if (currentlyDisplayed) {
-		const divider = `<div class="dropdown-divider"></div>`;
-		$('#sidebarStates').find('.dropdown-menu').empty().append(dropdownItem);
-		$('#sidebarStates').find('.dropdown-menu').append(divider);
+		// const divider = `<div class="dropdown-divider"></div>`;
+		// $('#sidebarStates').find('.dropdown-menu').empty().append(dropdownItem);
+		// $('#sidebarStates').find('.dropdown-menu').append(divider);
 		$('#sidebarStatesButton').text(state);
 	} else {
 		$('#sidebarStates').find('.dropdown-menu').append(dropdownItem);
@@ -53,11 +87,11 @@ function listenToSidebarState() {
 		event.preventDefault();
 		// event.stopPropagation();
 		const stateClicked = $(event.currentTarget).text();
+		console.log(stateClicked);
+		console.log('state clicked');
 		$('#sidebarStatesButton').text(stateClicked);
 		loadSidebarClickedTable(stateClicked);
 		loadSidebarAfterClick(stateClicked);
-		console.log(stateClicked);
-		console.log('state clicked');
 	});
 }
 
@@ -81,10 +115,43 @@ function listenToSidebarTableLength() {
 	});
 }
 
+function showPleaseWait() {
+	$('#pleaseWaitDialog').modal('show');
+}
+
+function hidePleaseWait() {
+	// $('#pleaseWaitDialog').modal('toggle');
+	$('#pleaseWaitDialog').hide();
+	$('.modal-backdrop').hide();
+}
+
+function progressBarUpdate() {
+	const totalCalls = 51;
+	const current = CENSUS_DATA.callsDone;
+	const percentageDone = Math.ceil((current / 51) * 100);
+	if (percentageDone < 15) {
+		$('.modal-header').children('h1').text('Starting to collect data...');
+	} else if (percentageDone >= 15 && percentageDone < 60) {
+		$('.modal-header').children('h1').text('Receiving data...');
+	} else if (percentageDone >= 60 && percentageDone < 80) {
+		$('.modal-header').children('h1').text('Just about done...');
+	} else if (percentageDone >= 80 && percentageDone < 100) {
+		$('.modal-header').children('h1').text('Almost there...');
+	} else if (percentageDone == 100) {
+		$('.modal-header').children('h1').text('Data is now ready!');
+	}
+	$('#progressBar').attr('aria-valuenow', percentageDone);
+	$('#progressBar').width(`${percentageDone}%`);
+	$('#srOnly').text(`${percentageDone}% Complete`);
+
+}
+
 function listenToAjaxStop() {
 	$(document).ajaxStop(function () {
-		$('#reportSelect').toggleClass('disabled');
-		$('#reportSubmitButton').toggleClass('disabled');
+		$('#pleaseWaitDialog').modal('hide');
+		setTimeout(function() {
+			hidePleaseWait();	
+		}, 1000);
 		console.log('report rdy');
 		console.log(CENSUS_DATA);
 	});
@@ -111,6 +178,7 @@ function processCensusDataLoop(data, callNumber, state) {
 	if (CENSUS_DATA.submitClicked) {
 		$('#dataTableTwo').DataTable().rows.add(currentData).draw(false);
 	}
+	progressBarUpdate();
 	console.log(`CAll ${callNumber} done. Percent done: ${(CENSUS_DATA.callsDone/51) *100}%`);
 }
 
@@ -130,6 +198,7 @@ function runProcessesOnLoad() {
 			}
 			query.for = `state:${stateCode}`;
 			getCensusDataCall(endpoint, query, timeOut, key, callNumber, processCensusDataLoop);
+			
 			if (key !== 'Alabama') {
 				fillSidebarState(key);
 			}
@@ -243,6 +312,15 @@ function updateMainDropDown() {
 	fillSidebarState('Alabama', true);
 }
 
+function initializeProgressBar() {
+	showPleaseWait();
+	$('.modal-backdrop').append('<div id="particles-js"></div>');
+	/* particlesJS.load(@dom-id, @path-json, @callback (optional)); */
+	particlesJS.load('particles-js', 'assets/particles.json', function() {
+	  console.log('callback - particles.js config loaded');
+	});
+}
+
 function handleCensus() {
 	console.log('handleCensus running');
 	// user report click listener
@@ -257,6 +335,9 @@ function handleCensus() {
 	$(runProcessesOnLoad);
 	$(listenToAjaxStop);
 	$(listenToSidebarState);
+	$(listenToViewportChange);
+	$(addStylingClasses);
+	$(initializeProgressBar);
 }
 
 $(handleCensus);
