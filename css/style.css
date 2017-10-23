@@ -10,7 +10,6 @@ table {
 	background: url('../img/bg.jpeg') no-repeat bottom center scroll; 
 	width: 100%;
 	height: 100%;
-	/*background-size: 100% auto;*/
 	background-size: cover;
 	z-index: 1;
 }
@@ -146,4 +145,8 @@ header {
 
 #sidebarLength .btn-outline-secondary:focus {
 	box-shadow: none;
+}
+
+.modal-backdrop.show {
+	opacity: 1;
 }
