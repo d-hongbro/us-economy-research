@@ -4,30 +4,87 @@ function addStylingClasses() {
 	$('table').addClass('table-striped table-bordered table-sm');
 }
 
+function sidebarResponsive(viewportWidth = $(window).width()) {
+	console.log('sidebarResponsive');
+	if (viewportWidth > 1600) {
+		$('#sidebarSearch').removeClass('col-lg-4');
+		$('#sidebarSearch').addClass('col-lg-12');
+		$('#sidebarLength').removeClass('col-lg-4');
+		$('#sidebarLength').addClass('col-lg-12');
+		$('#sidebarStates').removeClass('col-lg-4');
+		$('#sidebarStates').addClass('col-lg-12');
+		$('#mainPage').addClass('col-lg-10');
+		$('#mainPage').removeClass('col-lg-12');
+	} else if (viewportWidth <= 1600) {
+		$('#sidebarSearch').addClass('col-lg-4');
+		$('#sidebarSearch').removeClass('col-lg-12');
+		$('#sidebarLength').addClass('col-lg-4');
+		$('#sidebarLength').removeClass('col-lg-12');
+		$('#sidebarStates').addClass('col-lg-4');
+		$('#sidebarStates').removeClass('col-lg-12');
+		$('#mainPage').removeClass('col-lg-10');
+		$('#mainPage').addClass('col-lg-12');
+	}
+}
+
 function listenToViewportChange() {
 	let viewportWidth = $(window).width();
 	addResponsiveness(viewportWidth);
 	$(window).resize(event => {
+		console.log('window resizng');
 		viewportWidth = $(window).width();
+		console.log(viewportWidth);
 		addResponsiveness(viewportWidth);
+		tableResponsive(viewportWidth);
+		sidebarResponsive(viewportWidth);
 	});
 }
 
-function addResponsiveness(currentWidth) {
+function tableResponsive(viewportWidth = $(window).width()) {
+	console.log('tableResponsive running');
+	console.log(viewportWidth);
+    const table = $('#dataTableTwo').DataTable();
+	if (viewportWidth >= 1900) {
+		table.columns([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]).visible(true, false);
+	} else if (viewportWidth < 1900 && viewportWidth > 1100) {
+		table.columns([1, 2, 3, 4, 5, 7, 9]).visible(true, false);
+		table.columns([0, 6, 8, 10]).visible(false, false);
+	} else if (viewportWidth <= 1100 && viewportWidth > 768) {
+		table.columns([1, 2, 3, 4, 5, 9]).visible(true, false);
+		table.columns([0, 6, 7, 8, 10]).visible(false, false);
+	} else if (viewportWidth <= 768 && viewportWidth > 710) {
+		table.columns([1, 2, 3, 4, 9]).visible(true, false);
+		table.columns([0, 5, 6, 7, 8, 10]).visible(false, false);
+	} else if (viewportWidth <= 710 && viewportWidth > 580) {
+		table.columns([1, 2, 3, 9]).visible(true, false);
+		table.columns([0, 4, 5, 6, 7, 8, 10]).visible(false, false);
+	} else if (viewportWidth <= 580) {
+		console.log(`less than ${viewportWidth}`);
+		table.columns([1, 2, 9]).visible(true, false);
+		table.columns([0, 3, 4, 5, 6, 7, 8, 10]).visible(false, false);
+	}
+	table.columns.adjust().draw( false );
+}
+
+function addResponsiveness(viewportWidth = $(window).width()) {
 	//listens to the viewport width
 	// then adds appropiate classes to the html elements
+	// reset
+	$('#dataTableTwo_paginate').removeClass('col-lg-6', 'col-md-4', 'col-sd-4', 'center');
+	$('#dataTableTwo_info').removeClass('col-lg-6', 'col-md-4', 'col-sd-4', 'center');
+
 	$('table').addClass('table table-responsive');
-	$('#dataTableTwo_paginate').addClass('col-lg-6');
-	$('#dataTableTwo_info').addClass('col-lg-6');
-
-	if (currentWidth >= 1200) {
-
-	} else if (currentWidth >= 992) {
-
-	} else if (currentWidth >= 768) {
-
-	} else if (currentWidth < 768) {
-
+	if (viewportWidth > 1500) {
+		$('#dataTableTwo_paginate').addClass('col-lg-6');
+		$('#dataTableTwo_info').addClass('col-lg-6');
+	} else if (viewportWidth <= 1500 && viewportWidth > 820) {
+		$('#dataTableTwo_paginate').addClass('col-md-8');
+		$('#dataTableTwo_info').addClass('col-md-4');
+	} else if (viewportWidth <= 820) {
+		$('#dataTableTwo_paginate').addClass('center');
+		$('#dataTableTwo_info').addClass('center');
+		$('#dataTableTwo_paginate').addClass('col-lg-8');
+		$('#dataTableTwo_info').addClass('col-lg-4');
 	}
 } // END OF STYLING FUNCTIONS
 //______________________________________________________________________
@@ -61,7 +118,7 @@ function loadSidebarClickedTable(state) {
 	data = processCensusDataTypes(data);
 	$('#dataTableTwo').DataTable().clear().draw();
 	$('#dataTableTwo').DataTable().rows.add(data);
-	$('#dataTableTwo').DataTable().columns.adjust().draw()
+	$('#dataTableTwo').DataTable().columns.adjust().draw();
 }
 
 function loadSidebarAfterClick(state) {
@@ -116,8 +173,9 @@ function hidePleaseWait() {
 	// $('#pleaseWaitDialog').modal('toggle');
 	$('#pleaseWaitDialog').hide();
 	$('.modal-backdrop').hide();
-}
+	$('.modal-open').css('overflow', 'scroll');
 
+}
 function progressBarUpdate() {
 	const totalCalls = 51;
 	const current = CENSUS_DATA.callsDone;
@@ -149,7 +207,13 @@ function listenToAjaxStop() {
 
 function initializeProgressBar() {
 	showPleaseWait();
+
 	$('.modal-backdrop').append('<div id="particles-js"></div>');
+	particlesJS.load('particles-js', 'assets/particles.json', function() {
+	  console.log('callback - particles.js config loaded');
+	});
+
+	$('.overlay').append('<div id="particles-js"></div>');
 	particlesJS.load('particles-js', 'assets/particles.json', function() {
 	  console.log('callback - particles.js config loaded');
 	});
@@ -238,8 +302,10 @@ function returnObjectValueByKey(obj, key) {
 
 function processCensusDataTypes(data) {
 	for (let row = 0; row < data.length; row++) {
-		data[row][0] = parseInt(data[row][0]).toLocaleString();
-		data[row][1] = parseInt(data[row][1]).toLocaleString();
+		data[row][2] = OPTAX[data[row][2]];
+
+		data[row][3] = parseInt(data[row][3]).toLocaleString();
+		data[row][4] = parseInt(data[row][4]).toLocaleString();
 
 		data[row][5] = "$" + parseInt(data[row][5]).toLocaleString();
 		data[row][7] = "$" + parseInt(data[row][7]).toLocaleString();
@@ -248,8 +314,7 @@ function processCensusDataTypes(data) {
 		data[row][6] = data[row][6] + '%';
 		data[row][8] = data[row][8] + '%';
 		data[row][10] = data[row][10] + '%';
-
-		data[row][4] = OPTAX[data[row][4]];
+	
 	}
 	return data;
 }
@@ -266,7 +331,7 @@ function renderDataTableTwoHeader(data) {
 	});
 	return columns;
 }
-
+//GEO_TTL,NAICS2012_TTL,OPTAX,ESTAB,EMP,RCPTOT,RCPTOT_S,PAYANN,PAYANN_S,PAYQTR1,PAYQTR1_S
 function renderDataTableTwo() {
 	console.log('renderDataTableTwo running');
 	let data = CENSUS_DATA['Alabama'];
@@ -278,9 +343,14 @@ function renderDataTableTwo() {
 		columns: columns,
 		retrieve: true,	
 		searching: true,
+		"autoWidth": false,
+		columnDefs: [
+			{"targets": '_all', visible: true, "createdCell": function(td, cellData, rowData,row, col) {$(td).attr('title', cellData);}}
+
+		],
 		"iDisplayLength": 50,
 		"sDom": '<"top"ip><"card-block"tr><"card-footer"p>',
-		"order": [[0, "desc"]],
+		"order": [[1, "desc"]],
 		"language": {
 			"decimal": ".",
 			"thousands": ","
@@ -299,7 +369,9 @@ function listenToMainReportSubmit() {
 		    scrollTop: $(target).offset().top
 	    }, 1500);
 	    CENSUS_DATA.submitClicked = true;
-		
+	    tableResponsive();
+		addResponsiveness();
+		sidebarResponsive();
 	});
 } 
 /*  END OF AJAX CALLS AND DATA PROCESSING   

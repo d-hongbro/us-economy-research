@@ -7,25 +7,30 @@ Allows the user to search the Economy Census Data by state
 
 ## Features Coming
 
+0. Time complexity - Make the app call 1 ajax call for 1 state
+					- call more as the user requests
+					- if user wants all then download the rest
+					-
 1. CSS - Make it look better
 2. Deploy graph for the data
 3. Download as an excel file
 4. Mulitple tables per state
 5. Data comparison tables
 6. Data comparison graphs
+7. Session storage
 
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
-### Prerequisites
+<!-- ### Prerequisites
 
 What things you need to install the software and how to install them
 
 ```
 Give examples
 ```
-
+ -->
 ### Installing
 
 A step by step series of examples that tell you have to get a development env running

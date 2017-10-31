@@ -6,6 +6,20 @@ table {
 	text-align: center;
 }
 
+tbody td {
+	max-width: 120px;
+	min-width: 50px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.center {
+	margin: 0 auto;
+	float: none !important;
+	text-align: center !important;
+}
+
 .home {
 	background: url('../img/bg.jpeg') no-repeat bottom center scroll; 
 	width: 100%;
@@ -108,11 +122,11 @@ header {
 	margin: 30px 0px;
 }
 
-#sidebarLength hr, #sidebarStates hr {
+#sidebarSearch hr, #sidebarLength hr, #sidebarStates hr {
 	margin-top: 0px;
 }
 
-#sidebarLength h4, #sidebarStates h4 {
+#sidebarSearch h4, #sidebarLength h4, #sidebarStates h4 {
 	margin-bottom: 5px;
 	font-weight: 400;
 }
@@ -149,4 +163,12 @@ header {
 
 .modal-backdrop.show {
 	opacity: 1;
+}
+
+@media only screen and (max-width: 1600px) {
+	.stack {
+		-ms-flex: 0 0 100% !important;
+		flex: 0 0 100% !important;
+	    max-width: 100% !important;
+	}
 }

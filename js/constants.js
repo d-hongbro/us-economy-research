@@ -4,7 +4,7 @@ let CENSUS_DATA = {
 	title: 'Economic Census: Economy-Wide Key Statistics 2012',
 	endpoint: 'https://api.census.gov/data/2012/ewks',
 	defaultQuery:  {
-			get: 'EMP,ESTAB,GEO_TTL,NAICS2012_TTL,OPTAX,PAYANN,PAYANN_S,PAYQTR1,PAYQTR1_S,RCPTOT,RCPTOT_S',
+			get: 'GEO_TTL,NAICS2012_TTL,OPTAX,ESTAB,EMP,RCPTOT,RCPTOT_S,PAYANN,PAYANN_S,PAYQTR1,PAYQTR1_S',
 			for: 'state:02',
 			NAICS2012: '',
 			key: CENSUS_KEY
@@ -12,7 +12,7 @@ let CENSUS_DATA = {
 	queryData: [],
 	callsDone: 0,
 	showing: 1
-}
+};
 
 let OPTAX = {
 	'00': 'Wholesale Trade',
@@ -80,10 +80,10 @@ let STATE_CODE = {
 };
 
 const HEADER_TYPE = {
-	'EMP': 'integer',
-	'ESTAB': 'integer',
 	'GEO_TTL': 'string',
 	'NAICS2012_TTL': 'string',
+	'EMP': 'integer',
+	'ESTAB': 'integer',
 	'PAYANN': 'integer',
 	'PAYANN_S': 'percent',
 	'PAYQTR1': 'integer',
@@ -91,11 +91,11 @@ const HEADER_TYPE = {
 	'RCPTOT': 'integer',
 	'RCPTOT_S': 'percent',
 	'OPTAX': 'OPTAX'
-}
+};
 
 const HEADER = {
-	'EMP': 'Total Employees',
-	'ESTAB': 'Total Establishments',
+	'EMP': 'Employees',
+	'ESTAB': 'Establishments',
 	'GEO_TTL': 'State',
 	'NAICS2012_TTL': 'NAICS2012',
 	'PAYANN': 'Annual Payroll*',
@@ -105,9 +105,9 @@ const HEADER = {
 	'RCPTOT': 'Value of Business Done*',
 	'RCPTOT_S': 'Value of Business Done SD**',
 	'OPTAX': 'OPTAX'
-}
+};
 
 const HEADER_REMARKS = {
 	'*': 'Per $1000',
 	'**': 'Expressed in Percentage'
-}
+};

@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <!-- Required meta tags-->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
 	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">
@@ -11,10 +11,8 @@
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
 	<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
-<!-- 	<script type="text/javascript" src="js/bootstrap/bootstrap.js"></script> -->
-
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/canvasjs/1.7.0/canvasjs.min.js"></script>
 	<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 	<script type="text/javascript" src="js/census.js"></script>
@@ -28,7 +26,6 @@
 		<div class="container">
 			<div class="home-jumbo jumbotron">
 				<h1 class="display-2">Economic Census Research</h1>
-				<h2 class="text-muted display-6">Choose a report</h2>
 				<form class="home-search-form">
 					<div class="form-group">
 						<div class="input-group">
@@ -48,19 +45,27 @@
 	</section>
 	<div id="resultsPage" class="container-fluid hidden">
 	<div class="row">
-		<div class="sidebar col-lg-2">
-			<header>
-				<h2>Filter</h2>
-			</header>
-			<hr/>
-			<div class="js-sidebar-search">
+		<div class="sidebar col-lg-2 stack">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12">
+						<header>
+							<h2>Filter</h2>
+						</header>
+					</div>
+				</div>
+
+				<div class="row">
+			<div id="sidebarSearch" class="js-sidebar-search col-lg-4">
+				<h4>Search</h4>
+				<hr/>
 				<div class="input-group">
 					<span class="input-group-addon" id="sizing-addon1">Search</span>
-					<input id="sidebarSearch" type="text" class="form-control" placeholder='Health Care' aria-describedby="sizing-addon1">
+					<input id="sidebarSearch" type="text" class="form-control" placeholder='"Health Care"' aria-describedby="sizing-addon1">
 				</div>
 			</div>
 
-			<div id="sidebarLength" class="js-sidebar-length">
+			<div id="sidebarLength" class="js-sidebar-length col-lg-4">
 				<h4>Show Items</h4>
 				<hr/>
 				<div class="list-inline btn-group">
@@ -70,8 +75,9 @@
 					<button type="button" class="btn btn-outline-secondary list-inline-item">500</button>
 				</div>
 			</div>
-			<div id="sidebarStates">
-				<h4>Reports by States</h4>
+
+			<div id="sidebarStates" class="col-lg-4">
+				<h4>States</h4>
 				<hr/>
 				<div class="btn-group dropdown">
 				  <button id="sidebarStatesButton" type="button" class="btn btn-outline-primary btn-block dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -83,8 +89,18 @@
 				</div>
 			</div>
 
+				</div>
+		<!-- 	<hr/> -->
+
+
+
+
+
+			</div>
+
+
 		</div>
-		<div class="col-lg-10">
+		<div id="mainPage" class="col-lg-10">
 			<div class="graph card">
 				<h3 class="card-header">Graph</h3>
 				<div id="chartContainer" class="card-block">
@@ -109,22 +125,12 @@
 				</div>
 				<table id="dataTableTwo"></table>
 			</div>
-<!-- 				<h3 class="card-header">Data</h3>
-				<div class="card-block" data-current-page=""> -->
-					
-<!-- 				</div>
-				<div id="tablePaginationTwo" class="card-footer">
-					
-				</div> -->
-
-
-
 		</div>
 	</div>
 
 	</div>
 <!-- Modal -->
-<div class="modal fade" id="pleaseWaitDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="pleaseWaitDialog" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
