@@ -7,7 +7,7 @@
 // 6. multiple calls to responsiveness...slowing down dom rendering
 
 
-function changeCanvasSize(viewportWidth) {
+function changeCanvasSize(viewportWidth = $(window).width()) {
 	const homeWidth = $('#home').width();
 	const homeHeight = $('#home').height();
 	$('#backgroundParticle').attr('width', homeWidth);
