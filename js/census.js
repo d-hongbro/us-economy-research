@@ -7,6 +7,13 @@
 // 6. multiple calls to responsiveness...slowing down dom rendering
 
 
+function changeCanvasSize(viewportWidth) {
+	const homeWidth = $('#home').width();
+	const homeHeight = $('#home').height();
+	$('#backgroundParticle').attr('width', homeWidth);
+	$('#backgroundParticle').attr('height', homeHeight);
+}
+
 // UI UX TABLE RESPONSIVENESS
 // STYLING FUNCTIONS
 function addStylingClasses() {
@@ -46,6 +53,7 @@ function listenToViewportChange() {
 		addResponsiveness(viewportWidth);
 		tableResponsive(viewportWidth);
 		sidebarResponsive(viewportWidth);
+		changeCanvasSize(viewportWidth);
 	});
 }
 
@@ -222,7 +230,7 @@ function initializeProgressBar() {
 	  console.log('callback - particles.js config loaded');
 	});
 
-	$('.overlay').append('<div id="particles-js"></div>');
+	$('.overlay').append('<div id="backgroundParticle"></div>');
 	particlesJS.load('particles-js', 'assets/particles.json', function() {
 	  console.log('callback - particles.js config loaded');
 	});
