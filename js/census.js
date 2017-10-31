@@ -231,7 +231,7 @@ function initializeProgressBar() {
 	});
 
 	$('.overlay').append('<div id="backgroundParticle"></div>');
-	particlesJS.load('particles-js', 'assets/particlesjs-home-bg.json', function() {
+	particlesJS.load('backgroundParticle', 'assets/particlesjs-home-bg.json', function() {
 	  console.log('callback - particles.js config loaded');
 	});
 } // END OF PROGRESS BAR FUNCTIONS
