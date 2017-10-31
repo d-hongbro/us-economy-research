@@ -1,3 +1,12 @@
+// CURRENT PROBLEMS
+// 1. particle is setting static width: 1920 height: 960 overflow
+// 2. search input broken now
+// 3. Hide main page
+// 4. particle js not showing on modal open
+// 5. change bg particle color to yellow hue
+// 6. multiple calls to responsiveness...slowing down dom rendering
+
+
 // UI UX TABLE RESPONSIVENESS
 // STYLING FUNCTIONS
 function addStylingClasses() {
