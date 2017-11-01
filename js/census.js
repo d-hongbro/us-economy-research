@@ -1,12 +1,14 @@
-// CURRENT PROBLEMS
-// 1. particle is setting static width: 1920 height: 960 overflow - fixed
-// 2. search input broken now - fixed
-// 3. Hide main page - fixed
-// 4. particle js not showing on modal open - fixed
-// 5. change bg particle color to yellow hue - fixed
-// 6. multiple calls to responsiveness...slowing down dom rendering
-// 7. image size - fixed
-
+function displayMessage(message, type) {
+	// displays the message with fade pop up and fade out with hide
+	const html = `<p class="${type}">${message}</p>`;
+	$('#messageDialog').hide();
+	$('#messageDialog').empty().append(html);
+	$('#messageDialog').show();
+	setTimeout(function() {
+		$('#messageDialog').hide(1000);
+	}, 2000);
+	
+}
 
 function changeCanvasSize() {
 	console.log('changeCanvasSize running')
@@ -155,6 +157,7 @@ function listenToSidebarState() {
 	$('#sidebarStates').on('click', '.dropdown-item', event => {
 		event.preventDefault();
 		const stateClicked = $(event.currentTarget).text();
+		displayMessage(`${stateClicked}'s Economic Census Data has been loaded successfully`, 'success');
 		$('#sidebarStatesButton').text(stateClicked);
 		loadSidebarClickedTable(stateClicked);
 		loadSidebarAfterClick(stateClicked);
@@ -168,13 +171,17 @@ function listenToSidebarState() {
 // Add a search bar that searches for any records in all columns
 function listenToSidebarSearch() {
 	$('#sidebarSearch').on('keyup', event => {
-		$('#dataTableTwo').DataTable().search($('#sidebarSearch input').val()).draw();
+		const input = $('#sidebarSearch input').val();
+		displayMessage(`Displaying results for '${input}'`, 'success');
+		$('#dataTableTwo').DataTable().search(input).draw();
 	});
 }
 
 function listenToSidebarTableLength() {
 	$('#sidebarLength').on('click', 'button', event => {
-		$('#dataTableTwo').DataTable().page.len($(event.currentTarget).text()).draw();
+		const input = $(event.currentTarget).text();
+		displayMessage(`Now displaying ${input} rows`, 'success');
+		$('#dataTableTwo').DataTable().page.len(input).draw();
 		$('#sidebarLength').find('button.active').removeClass('active');
 		$(event.currentTarget).toggleClass('active');
 	});
@@ -221,7 +228,7 @@ function progressBarUpdate() {
 function listenToAjaxStop() {
 	$(document).ajaxStop(function () {
 		setTimeout(function() {
-			hidePleaseWait();	
+			hidePleaseWait();
 		}, 1000);
 	});
 }
@@ -388,14 +395,17 @@ function listenToMainReportSubmit() {
 		renderDataTableTwo();
 	    $('html, body').stop().animate({
 		    scrollTop: $(target).offset().top
-	    }, 1500);
+	    }, 750);
 	    CENSUS_DATA.submitClicked = true;
 	    tableResponsive();
 		addResponsiveness();
 		sidebarResponsive();
 		setTimeout(function() {
 			$('#home').hide();
-		}, 1500);
+		}, 750);
+		setTimeout(function() {
+			displayMessage("Report is now ready<br>Currently viewing Alabama's Economic Census data", 'success');
+		}, 500);
 	});
 } 
 /*  END OF AJAX CALLS AND DATA PROCESSING   
