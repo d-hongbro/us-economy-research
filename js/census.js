@@ -395,7 +395,6 @@ function listenToMainReportSubmit() {
 	    tableResponsive();
 		addResponsiveness();
 		sidebarResponsive();
-		changeCanvasSize();
 	});
 } 
 /*  END OF AJAX CALLS AND DATA PROCESSING   
@@ -423,6 +422,7 @@ function handleCensus() {
 	$(listenToViewportChange);
 	$(addStylingClasses);
 	$(initializeProgressBar);
+	$(changeCanvasSize);
 }
 
 $(handleCensus);
