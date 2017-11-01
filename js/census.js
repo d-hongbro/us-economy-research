@@ -1,10 +1,20 @@
-function displayMessage(message, type) {
+let timeout;
+
+function displayMessage(message, type, scroll = true) {
 	// displays the message with fade pop up and fade out with hide
 	const html = `<p class="${type}">${message}</p>`;
-	$('#messageDialog').hide();
+	clearTimeout(timeout);
+	$('#messageDialog').stop(true, true).hide();
 	$('#messageDialog').empty().append(html);
 	$('#messageDialog').show();
-	setTimeout(function() {
+	console.log(this);
+	if (scroll) {
+		$('html, body').animate({
+	            scrollTop: $('#messageDialog').offset().top
+	    }, 500);
+	}
+
+	timeout = setTimeout(function() {
 		$('#messageDialog').hide(1000);
 	}, 2000);
 	
@@ -209,7 +219,7 @@ function progressBarUpdate() {
 	const current = CENSUS_DATA.callsDone;
 	const percentageDone = Math.ceil((current / 51) * 100);
 	if (percentageDone < 15) {
-		$('.modal-header').children('h1').text('Starting to collect data...');
+		$('.modal-header').children('h1').text('Firing up systems!');
 	} else if (percentageDone >= 15 && percentageDone < 60) {
 		$('.modal-header').children('h1').text('Receiving data...');
 	} else if (percentageDone >= 60 && percentageDone < 80) {
@@ -404,7 +414,7 @@ function listenToMainReportSubmit() {
 			$('#home').hide();
 		}, 750);
 		setTimeout(function() {
-			displayMessage("Report is now ready<br>Currently viewing Alabama's Economic Census data", 'success');
+			displayMessage("Report is now ready<br>Currently viewing Alabama's Economic Census data", 'success', false);
 		}, 500);
 	});
 } 
