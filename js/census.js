@@ -196,7 +196,7 @@ function hidePleaseWait() {
 	// $('#pleaseWaitDialog').modal('toggle');
 	$('#pleaseWaitDialog').hide();
 	$('.modal-backdrop').hide();
-	$('.modal-open').css('overflow', 'scroll');
+	$('.modal-open').css('overflow', 'auto');
 
 }
 function progressBarUpdate() {
