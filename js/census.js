@@ -1,7 +1,7 @@
 // CURRENT PROBLEMS
 // 1. particle is setting static width: 1920 height: 960 overflow - fixed
-// 2. search input broken now
-// 3. Hide main page
+// 2. search input broken now - fixed
+// 3. Hide main page - fixed
 // 4. particle js not showing on modal open
 // 5. change bg particle color to yellow hue
 // 6. multiple calls to responsiveness...slowing down dom rendering
@@ -392,6 +392,9 @@ function listenToMainReportSubmit() {
 	    tableResponsive();
 		addResponsiveness();
 		sidebarResponsive();
+		setTimeout(function() {
+			$('#home').hide();
+		}, 1500);
 	});
 } 
 /*  END OF AJAX CALLS AND DATA PROCESSING   
