@@ -167,7 +167,7 @@ function listenToSidebarState() {
 // Add a search bar that searches for any records in all columns
 function listenToSidebarSearch() {
 	$('#sidebarSearch').on('keyup', event => {
-		$('#dataTableTwo').DataTable().search($(event.currentTarget).val()).draw();
+		$('#dataTableTwo').DataTable().search($('#sidebarSearch input').val()).draw();
 	});
 }
 
