@@ -7,9 +7,15 @@
 // 6. multiple calls to responsiveness...slowing down dom rendering
 
 
-function changeCanvasSize(viewportWidth = $(window).width()) {
+function onHomePageSizeChange() {
+	$('#home').resize(event => {
+		changeCanvasSize();
+	});
+}
+
+function changeCanvasSize() {
 	const homeWidth = $('#home').width();
-	const homeHeight = $('#home').height();
+	const homeHeight = $('#home').height();	
 	$('#backgroundParticle').attr('width', homeWidth);
 	$('#backgroundParticle').attr('height', homeHeight);
 }
@@ -389,6 +395,7 @@ function listenToMainReportSubmit() {
 	    tableResponsive();
 		addResponsiveness();
 		sidebarResponsive();
+		changeCanvasSize();
 	});
 } 
 /*  END OF AJAX CALLS AND DATA PROCESSING   
