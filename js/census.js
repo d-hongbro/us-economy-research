@@ -1,18 +1,11 @@
 // CURRENT PROBLEMS
-// 1. particle is setting static width: 1920 height: 960 overflow
+// 1. particle is setting static width: 1920 height: 960 overflow - fixed
 // 2. search input broken now
 // 3. Hide main page
 // 4. particle js not showing on modal open
 // 5. change bg particle color to yellow hue
 // 6. multiple calls to responsiveness...slowing down dom rendering
 
-
-function onHomePageSizeChange() {
-	$('#home').resize(event => {
-		console.log('onHomePageSizeChange ran');
-		changeCanvasSize();
-	});
-}
 
 function changeCanvasSize() {
 	console.log('changeCanvasSize running')
@@ -97,8 +90,8 @@ function addResponsiveness(viewportWidth = $(window).width()) {
 	//listens to the viewport width
 	// then adds appropiate classes to the html elements
 	// reset
-	$('#dataTableTwo_paginate').removeClass('col-lg-6', 'col-md-4', 'col-sd-4', 'center');
-	$('#dataTableTwo_info').removeClass('col-lg-6', 'col-md-4', 'col-sd-4', 'center');
+	$('#dataTableTwo_paginate').removeClass('col-lg-6 col-lg-8 col-md-4 col-sd-4 center');
+	$('#dataTableTwo_info').removeClass('col-lg-6 col-lg-4 col-md-4 col-sd-4 center');
 
 	$('table').addClass('table table-responsive');
 	if (viewportWidth > 1500) {
