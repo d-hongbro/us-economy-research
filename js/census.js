@@ -9,13 +9,17 @@
 
 function onHomePageSizeChange() {
 	$('#home').resize(event => {
+		console.log('onHomePageSizeChange ran');
 		changeCanvasSize();
 	});
 }
 
 function changeCanvasSize() {
+	console.log('changeCanvasSize running')
 	const homeWidth = $('#home').width();
-	const homeHeight = $('#home').height();	
+	const homeHeight = $('#home').height();
+	console.log('homeWidth: '+homeWidth);
+	console.log('homeHeight: '+homeHeight);	
 	$('#backgroundParticle').attr('width', homeWidth);
 	$('#backgroundParticle').attr('height', homeHeight);
 }
