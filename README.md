@@ -1,27 +1,37 @@
-# us-economy-research
+# Us Economy Census Data Research
 https://d-hongbro.github.io/us-economy-research/
 
-# Us Economy Census Data Research
-
-Allows the user to search the Economy Census Data by state
-
-## Features Coming
-
-0. Time complexity - Make the app call 1 ajax call for 1 state
-					- call more as the user requests
-					- if user wants all then download the rest
-					-
-1. CSS - Make it look better
-2. Deploy graph for the data
-3. Download as an excel file
-4. Mulitple tables per state
-5. Data comparison tables
-6. Data comparison graphs
-7. Session storage
+## Introduction
+This app provides access to the Economic Census Data: Economy-Wide Key Statistics from 2012.
+You able to see the industry related statistics for each state like the number of employees and establishments along with the value of business done and payroll expenses. The information will be made available through table where you will be able to dynamically search for keywords, select how many rows of data to display, and sort the data by columns.
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+Below are instructions on how to navigate through the features of the application.
+
+### API Information
+
+#### 2012 Economic Census - All Sectors: Economy-Wide Key Statistics
+"The Economic Census is the U.S. Government's official five-year measure of American business and the economy. It is conducted by the U.S. Census Bureau, and response is required by law. In October through December 2012, forms were sent out to nearly 4 million businesses, including large, medium and small companies representing all U.S. locations and industries. Respondents were asked to provide a range of operational and performance data for their companies." - description from https://census.gov
+
+#### Endpoint: https://api.census.gov/data/2012/ewks
+This application requests the statistics below in order of data table columns
+
+* State
+* NAICS2012 industry title
+* Type of operation or tax status code
+* Number of establishments
+* Number of employees
+* Value of business done ($1,000)
+* Standard error for estimate of value of business done (%)
+* Annual payroll ($1,000)
+* Standard error for estimate of annual payroll (%)
+* Total first quarter payrol
+* Standard error for estimate of first-quarter payroll (%)
+
+
+
+The app 
 
 <!-- ### Prerequisites
 
@@ -31,74 +41,16 @@ What things you need to install the software and how to install them
 Give examples
 ```
  -->
-### Installing
 
-A step by step series of examples that tell you have to get a development env running
-
-Say what the step will be
-
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
 
 ## Built With
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+HTML5, CSS3, JavaScript, jQuery, Particle JS, Bootstrap, DataTable, Normalize, Font Awesome
 
-## Contributing
+## Features Coming
 
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
-
-## Authors
-
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Hat tip to anyone who's code was used
-* Inspiration
-* etc
+* Session Storage for time complexity and UX
+* User generated graphs
+* Excel File download option
+* Data comparison tables
+* Multiple table rendering

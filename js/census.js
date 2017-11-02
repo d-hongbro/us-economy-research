@@ -1,7 +1,6 @@
 let timeout;
 
 function displayMessage(message, type, scroll = true) {
-	// displays the message with fade pop up and fade out with hide
 	const html = `<p class="${type}">${message}</p>`;
 	clearTimeout(timeout);
 	$('#messageDialog').stop(true, true).hide();
@@ -17,27 +16,20 @@ function displayMessage(message, type, scroll = true) {
 	timeout = setTimeout(function() {
 		$('#messageDialog').hide(1000);
 	}, 2000);
-	
 }
 
 function changeCanvasSize() {
-	console.log('changeCanvasSize running')
 	const homeWidth = $('#home').width();
 	const homeHeight = $('#home').height();
-	console.log('homeWidth: '+homeWidth);
-	console.log('homeHeight: '+homeHeight);	
 	$('#backgroundParticle').attr('width', homeWidth);
 	$('#backgroundParticle').attr('height', homeHeight);
 }
 
-// UI UX TABLE RESPONSIVENESS
-// STYLING FUNCTIONS
 function addStylingClasses() {
 	$('table').addClass('table-striped table-bordered table-sm');
 }
 
 function sidebarResponsive(viewportWidth = $(window).width()) {
-	console.log('sidebarResponsive');
 	if (viewportWidth > 1600) {
 		$('#sidebarSearch').removeClass('col-lg-4');
 		$('#sidebarSearch').addClass('col-lg-12');
@@ -63,9 +55,7 @@ function listenToViewportChange() {
 	let viewportWidth = $(window).width();
 	addResponsiveness(viewportWidth);
 	$(window).resize(event => {
-		console.log('window resizng');
 		viewportWidth = $(window).width();
-		console.log(viewportWidth);
 		addResponsiveness(viewportWidth);
 		tableResponsive(viewportWidth);
 		sidebarResponsive(viewportWidth);
@@ -100,9 +90,6 @@ function tableResponsive(viewportWidth = $(window).width()) {
 }
 
 function addResponsiveness(viewportWidth = $(window).width()) {
-	//listens to the viewport width
-	// then adds appropiate classes to the html elements
-	// reset
 	$('#dataTableTwo_paginate').removeClass('col-lg-6 col-lg-8 col-md-4 col-sd-4 center');
 	$('#dataTableTwo_info').removeClass('col-lg-6 col-lg-4 col-md-4 col-sd-4 center');
 
@@ -119,15 +106,8 @@ function addResponsiveness(viewportWidth = $(window).width()) {
 		$('#dataTableTwo_paginate').addClass('col-lg-8');
 		$('#dataTableTwo_info').addClass('col-lg-4');
 	}
-} // END OF STYLING FUNCTIONS
-//______________________________________________________________________
+}
 
-
-// FEATURE - sidebar filter by state
-// dropdown menu to choose state
-// dropdown menu is dynamically made
-// dropdown event will redraw the table according to what was chosen
-// How to grab current state thats populated
 function returnDropdownItem(item, disabled = false, link = '#', ) {
 	return `<a class="dropdown-item ${disabled ? 'disabled' : ''}" href="${link}">${item}</a>`;
 }
@@ -135,9 +115,6 @@ function returnDropdownItem(item, disabled = false, link = '#', ) {
 function fillSidebarState(state, currentlyDisplayed = false) {
 	const dropdownItem = returnDropdownItem(state, currentlyDisplayed);
 	if (currentlyDisplayed) {
-		// const divider = `<div class="dropdown-divider"></div>`;
-		// $('#sidebarStates').find('.dropdown-menu').empty().append(dropdownItem);
-		// $('#sidebarStates').find('.dropdown-menu').append(divider);
 		$('#sidebarStatesButton').text(state);
 	} else {
 		$('#sidebarStates').find('.dropdown-menu').append(dropdownItem);
@@ -145,7 +122,6 @@ function fillSidebarState(state, currentlyDisplayed = false) {
 }
 
 function loadSidebarClickedTable(state) {
-	console.log('loadSidebarClickedTable running');
 	let data = CENSUS_DATA[state];
 	renderDataTableTwoHeader(data.splice(0, 1));
 	data = processCensusDataTypes(data);
@@ -172,13 +148,8 @@ function listenToSidebarState() {
 		loadSidebarClickedTable(stateClicked);
 		loadSidebarAfterClick(stateClicked);
 	});
-} // END OF SIDEBAR STATE FILTER FUNCTIONS 
-// __________________________________________________________
+}
 
-
-// FEATURE - SEARCH
-// SIdebar implementation
-// Add a search bar that searches for any records in all columns
 function listenToSidebarSearch() {
 	$('#sidebarSearch').on('keyup', event => {
 		const input = $('#sidebarSearch input').val();
@@ -195,23 +166,16 @@ function listenToSidebarTableLength() {
 		$('#sidebarLength').find('button.active').removeClass('active');
 		$(event.currentTarget).toggleClass('active');
 	});
-} // END OF SIDEBAR SEARCH FUNCTIONS
-//_________________________________________________________________
-
-
-
-// ______________________________________________________________
-// PROGRESS BAR FUNCTIONS
+}
 
 function showPleaseWait() {
 	$('#pleaseWaitDialog').modal('show');
 }
 
 function hidePleaseWait() {
-	// $('#pleaseWaitDialog').modal('toggle');
 	$('#pleaseWaitDialog').hide();
 	$('.modal-backdrop').hide();
-	$('.modal-open').css('overflow', 'auto');
+	$('.modal-open').css('overflow-y', 'hidden');
 
 }
 function progressBarUpdate() {
@@ -247,26 +211,17 @@ function initializeProgressBar() {
 	showPleaseWait();
 
 	$('.modal-backdrop').append('<div id="particles-js"></div>');
-	particlesJS.load('particles-js', 'assets/particles.json', function() {
+	particlesJS.load('particles-js', 'assets/particle/particles.json', function() {
 	  console.log('callback - particles.js config loaded');
 	});
 
 	$('.overlay').append('<div id="backgroundParticle"></div>');
-	particlesJS.load('backgroundParticle', 'assets/particlesjs-home-bg.json', function() {
+	particlesJS.load('backgroundParticle', 'assets/particle/particlesjs-home-bg.json', function() {
 	  console.log('callback - particles.js config loaded');
 	});
-} // END OF PROGRESS BAR FUNCTIONS
-//__________________________________________________________________
-
-
-//FEATURE - REMOVE DUPLICATES
-// Use the array filter function
-
-
-// FEATURE - Hiding columns based on viewport
+}
 
 function processCensusDataLoop(data, callNumber, state) {
-	// Chunked Data for efficiency
 	let currentData = data;
 	CENSUS_DATA[state] = currentData;
 	CENSUS_DATA.callsDone++;
@@ -300,8 +255,6 @@ function runProcessesOnLoad() {
 	};
 }
 
-// FEATURE - AJAX ON LOAD
-
 function listenToPaginationClick() {
 	$('#tablePagination').on('click', '.js-pagination-link', function(event) {
 		event.preventDefault();
@@ -311,8 +264,6 @@ function listenToPaginationClick() {
 	})
 }
 
-/*   _______________________________________
-		AJAX CALLS AND DATA PROCESSING   */
 function getCensusDataCall(endpoint, query, timeOut, state, callNumber, callback) {
 	$.getJSON(endpoint, query, function(data) {
 		callback(data, callNumber, state);
@@ -358,7 +309,6 @@ function processCensusDataTypes(data) {
 }
 
 function renderDataTableTwoHeader(data) {
-	console.log('renderDataTableTwoHeader running');
 	let columns = [];
 	let value;
 	data[0].forEach((item, index) => {
@@ -369,9 +319,8 @@ function renderDataTableTwoHeader(data) {
 	});
 	return columns;
 }
-//GEO_TTL,NAICS2012_TTL,OPTAX,ESTAB,EMP,RCPTOT,RCPTOT_S,PAYANN,PAYANN_S,PAYQTR1,PAYQTR1_S
+
 function renderDataTableTwo() {
-	console.log('renderDataTableTwo running');
 	let data = CENSUS_DATA['Alabama'];
 	CENSUS_DATA['showing'] = 1;
 	let columns = renderDataTableTwoHeader(data.splice(0, 1));
@@ -398,8 +347,8 @@ function renderDataTableTwo() {
 
 function listenToMainReportSubmit() {
 	$('.home-search-form').submit(event => {
-		console.log('main form submitted');
 		event.preventDefault();
+		$('.modal-open').css('overflow-y', 'auto');
 		const target = $('#reportSubmitButton').attr('href');
 		$('#resultsPage').toggleClass('hidden');
 		renderDataTableTwo();
@@ -417,23 +366,9 @@ function listenToMainReportSubmit() {
 			displayMessage("Report is now ready<br>Currently viewing Alabama's Economic Census data", 'success', false);
 		}, 500);
 	});
-} 
-/*  END OF AJAX CALLS AND DATA PROCESSING   
-_____________________________________________*/
+}
 
-
-
-/*  HOMEPAGE DROPDOWN MENU  */
-function updateMainDropDown() {
-	const html = `<option value="0">${CENSUS_DATA['title']}</option>`;
-	$('#reportSelect').append(html);
-	fillSidebarState('Alabama', true);
-}/*- end of HOMEPAGE DROPDOWN MENU */
-
-// MAIN FUNCTION TO HANDLE PROCESSES
 function handleCensus() {
-	console.log('handleCensus running');
-	$(updateMainDropDown);
 	$(listenToMainReportSubmit);
 	$(listenToSidebarSearch);
 	$(listenToSidebarTableLength);

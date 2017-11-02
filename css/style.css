@@ -21,16 +21,28 @@ tbody td {
 }
 
 .home {
-	background: url('../img/bg.jpg') no-repeat center scroll; 
+	background: url('../assets/img/bg.jpg') no-repeat center scroll; 
 	width: 100%;
 	height: 100%;
 	background-size: cover;
 	z-index: 1;
 }
 
+.display-2 {
+	text-align: center;
+}
+
 .home-jumbo {
-	z-index: 3;
+	z-index: 10;
 	background: linear-gradient(rgba(255,255,255, .5), rgba(255,255,255, .5));
+}
+
+#home .container {
+	z-index: 20;
+}
+
+#home .home-search-form {
+	margin: 20px 0 10px 0;
 }
 
 .overlay {
@@ -205,4 +217,11 @@ header {
   width: 100%;
   font-weight: 500;
   font-size: 16px;
+}
+
+#reportSubmitButton {
+    color: #fff;
+    background-image: none;
+    background-color: #0275d8;
+    border-color: #0275d8;
 }
