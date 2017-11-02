@@ -10,7 +10,7 @@ You able to see the industry related statistics for each state like the number o
 Below are instructions on how to navigate through the features of the application.
 
 ### API Information
-
+https://www.census.gov/data/developers/data-sets/economic-census.html
 #### 2012 Economic Census - All Sectors: Economy-Wide Key Statistics
 "The Economic Census is the U.S. Government's official five-year measure of American business and the economy. It is conducted by the U.S. Census Bureau, and response is required by law. In October through December 2012, forms were sent out to nearly 4 million businesses, including large, medium and small companies representing all U.S. locations and industries. Respondents were asked to provide a range of operational and performance data for their companies." - description from https://census.gov
 
@@ -29,7 +29,15 @@ This application requests the statistics below in order of data table columns
 * Total first quarter payrol
 * Standard error for estimate of first-quarter payroll (%)
 
+#### Loading Screen
+The loading screen is displayed for a short period of time as the application gathers the reports per state through the API endpoint.
+![Loading Screen](/assets/img/loading-screen.jpg)
 
+#### Home Page
+Once you see this screen then the reports are now ready to be viewed. Click the blue button block to continue.
+![Home Page](/assets/img/home-page.jpg)
+
+#### 
 
 The app 
 
