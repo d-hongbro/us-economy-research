@@ -31,25 +31,21 @@ This application requests the statistics below in order of data table columns
 
 #### Loading Screen
 The loading screen is displayed for a short period of time as the application gathers the reports per state through the API endpoint.
+
 ![Loading Screen](/assets/img/loading-screen.jpg)
 
 #### Home Page
 Once you see this screen then the reports are now ready to be viewed. Click the blue button block to continue.
 ![Home Page](/assets/img/home-page.jpg)
 
-#### 
+#### Filter Sidebar
+Depending on your screen size, the sidebar may be displayed on the left of the datatable or at the top.
+You can use the filters to dynamically search the datatable, display "X" amount of rows, and display results by state.
+![Filter Sidebar](/assets/img/filter-sidebar.jpg)
 
-The app 
-
-<!-- ### Prerequisites
-
-What things you need to install the software and how to install them
-
-```
-Give examples
-```
- -->
-
+#### Table Column and Pagination
+You can go through the result pages here and also click the column headers to sort the table.
+![Table Header](/assets/img/table-header.jpg)
 
 ## Built With
 
